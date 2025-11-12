@@ -12,5 +12,4 @@ class Diario(Base):
     texto = Column(String(255), nullable = False)
     data_registro = Column(DateTime(timezone=True), server_default=func.now())
 
-
     usuario = relationship("Usuario", back_populates = "diarios")

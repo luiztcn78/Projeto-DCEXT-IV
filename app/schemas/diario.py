@@ -15,7 +15,7 @@ class DiarioUpdate(DiarioBase):
 class DiarioResponse(DiarioBase):
     id_diario: int
     id_usuario: int
-    data_registro = datetime
+    data_registro: datetime
 
     class Config:
         orm_mode = True

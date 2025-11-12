@@ -21,7 +21,7 @@ class LembreteUpdate(BaseModel):
     tipo_lembrete: Optional[str] = None
 
 
-class LembreteOut(LembreteBase):
+class LembreteResponse(LembreteBase):
     id_lembrete: int
     data_criacao: datetime
 

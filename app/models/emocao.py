@@ -35,4 +35,4 @@ class Emocao(Base):
 
     # Relationship com Usuario.
     # Usamos backref para não precisar editar o model Usuario existente.
-    usuario = relationship("Usuario", backref=backref("emocoes", cascade="all, delete-orphan"))
+    usuario = relationship("Usuario", back_populates="emocoes")

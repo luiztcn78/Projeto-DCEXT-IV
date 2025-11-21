@@ -67,6 +67,14 @@ class CRUDAtividade:
         db.commit()
         return True
 
+    def listar_todas(self, db: Session, limit: int = 10):
+        return (
+        db.query(Atividade)
+        .order_by(Atividade.id_atividade.desc())
+        .limit(limit)
+        .all()
+    )
+
     def obter_por_id(self, db: Session, id_atividade: int) -> Atividade | None:
         return db.query(Atividade).filter(Atividade.id_atividade == id_atividade).first()
 

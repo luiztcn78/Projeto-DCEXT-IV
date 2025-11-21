@@ -12,6 +12,9 @@ router = APIRouter(prefix="/atividades", tags=["Atividades"])
 def criar_atividade(data: AtividadeCreate, db: Session = Depends(get_db)):
     return atividade_crud.criar(db, data)
 
+@router.get("/", response_model=list[AtividadeOut])
+def listar_todas(limit: int = 10, db: Session = Depends(get_db)):
+    return atividade_crud.listar_todas(db=db, limit=limit)
 
 @router.get("/{id_atividade}", response_model=AtividadeOut)
 def obter_atividade(id_atividade: int, db: Session = Depends(get_db)):

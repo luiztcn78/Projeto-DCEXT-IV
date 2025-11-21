@@ -4,6 +4,11 @@ from app.schemas.lembrete import LembreteCreate, LembreteUpdate
 from fastapi import HTTPException, status
 
 class CRUDLembrete:
+    
+    def __init__(self):
+        self.model = Lembrete
+
+
     def criar(self, db: Session, data: LembreteCreate) -> Lembrete:
         lembrete_existente = db.query(Lembrete).filter(
             Lembrete.id_usuario == data.id_usuario,
@@ -63,6 +68,13 @@ class CRUDLembrete:
 
     def obter_por_usuario(self, db: Session, id_usuario: int):
         return db.query(Lembrete).filter(Lembrete.id_usuario == id_usuario).all()
+    
+    def listar_com_limit(self, db: Session, limit: int = 10):
+        return (
+        db.query(self.model)
+        .limit(limit)
+        .all()
+        )
 
 
 

@@ -18,6 +18,11 @@ def criar_lembrete(lembrete: LembreteCreate, db: Session = Depends(get_db)):
     return lembrete_crud.criar(db=db, data=lembrete)
 
 
+@router.get("/", response_model=List[LembreteResponse])
+def listar_todos(limit: int = 10, db: Session = Depends(get_db)):
+    lembretes = lembrete_crud.listar_com_limit(db, limit=limit)
+    return lembretes
+
 @router.get("/{id_lembrete}", response_model=LembreteResponse)
 def obter_lembrete(id_lembrete: int, db: Session = Depends(get_db)):
     lembrete = lembrete_crud.obter_por_id(db, id_lembrete)
@@ -32,7 +37,7 @@ def listar_por_usuario(id_usuario: int, db: Session = Depends(get_db)):
     return lembretes
 
 
-@router.patch("/{id_lembrete}", response_model=LembreteResponse)
+@router.put("/{id_lembrete}", response_model=LembreteResponse)
 def atualizar_lembrete(id_lembrete: int, data: LembreteUpdate, db: Session = Depends(get_db)):
     lembrete = lembrete_crud.atualizar(db, id_lembrete, data)
     if not lembrete:

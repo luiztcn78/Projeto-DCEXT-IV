@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.usuario import UsuarioCreate, UsuarioResponse
+from app.schemas.usuario import UsuarioCreate, UsuarioResponse, UsuarioUpdate
 from app.crud.usuario import usuario_crud
 
 router = APIRouter(prefix="/usuarios", tags=["usuarios"])
@@ -28,3 +28,23 @@ def obter_usuario_por_email(email: str, db: Session = Depends(get_db)):
     if not db_usuario:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
     return db_usuario
+
+# Listar usuários com limite
+@router.get("/", response_model=list[UsuarioResponse])
+def listar_usuarios(limit: int = 10, db: Session = Depends(get_db)):
+    return usuario_crud.listar_com_limit(db, limit)
+
+@router.put("/{usuario_id}", response_model=UsuarioResponse)
+def atualizar_usuario(usuario_id: int, usuario: UsuarioUpdate, db: Session = Depends(get_db)):
+    db_usuario = usuario_crud.atualizar(db, id_usuario=usuario_id, data=usuario)
+    if not db_usuario:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    return db_usuario
+
+# Excluir usuário
+@router.delete("/{usuario_id}", status_code=status.HTTP_204_NO_CONTENT)
+def excluir_usuario(usuario_id: int, db: Session = Depends(get_db)):
+    sucesso = usuario_crud.excluir(db, id_usuario=usuario_id)
+    if not sucesso:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado")
+    return

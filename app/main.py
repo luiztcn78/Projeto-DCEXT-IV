@@ -8,6 +8,7 @@ from app.routers import usuario as usuario_router
 from app.routers import diario as diario_router
 from app.routers import lembrete as lembrete_router
 from app.routers import atividade as atividade_router
+from app.routers import emocao as emocao_router
 app = FastAPI(title="Sistema DCEXT-IV", version="1.0.0")
 
 # Incluir routers
@@ -15,6 +16,7 @@ app.include_router(usuario_router.router)
 app.include_router(diario_router.router)
 app.include_router(lembrete_router.router)
 app.include_router(atividade_router.router)
+app.include_router(emocao_router.router)
 
 @app.on_event("startup")
 async def startup_event():

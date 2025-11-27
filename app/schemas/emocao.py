@@ -4,11 +4,12 @@ from enum import Enum as PyEnum
 from datetime import datetime
 
 class TipoEmocao(str, PyEnum):
-    MUITO_FELIZ = "muito_feliz"
-    FELIZ = "feliz"
-    NORMAL = "normal"
-    TRISTE = "triste"
-    MUITO_TRISTE = "muito_triste"
+    apaixonado = "apaixonado"
+    feliz = "feliz"
+    neutro = "neutro"
+    triste = "triste"
+    cansado = "cansado"
+
 
 # Base shared fields
 class EmocaoBase(BaseModel):
@@ -33,6 +34,10 @@ class EmocaoUpdate(BaseModel):
     compartilhado: Optional[bool] = None
 
 class EmocaoOut(EmocaoBase):
+    id_emocao: int
+    data_registro: datetime
+
+class EmocaoResponse(EmocaoBase):
     id_emocao: int
     data_registro: datetime
 

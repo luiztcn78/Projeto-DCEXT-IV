@@ -6,12 +6,11 @@ from sqlalchemy.sql import func
 from app.database import Base
 
 class TipoEmocao(PyEnum):
-    MUITO_FELIZ = "muito_feliz"
-    FELIZ = "feliz"
-    NORMAL = "normal"
-    TRISTE = "triste"
-    MUITO_TRISTE = "muito_triste"
-
+    apaixonado = "apaixonado"
+    feliz = "feliz"
+    neutro = "neutro"
+    triste = "triste"
+    cansado = "cansado"
 class Emocao(Base):
     """
     Tabela: emocoes

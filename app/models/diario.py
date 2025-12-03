@@ -10,6 +10,7 @@ class Diario(Base):
     id_diario = Column(Integer, primary_key = True, index = True, autoincrement = True)
     id_usuario = Column(Integer, ForeignKey("usuarios.id_usuario"), nullable = False)
     texto = Column(String(255), nullable = False)
+    emocao = Column(String(50), nullable=True)
     data_registro = Column(DateTime(timezone=True), server_default=func.now())
 
     usuario = relationship("Usuario", back_populates = "diarios")

@@ -1,18 +1,20 @@
 from sqlalchemy.orm import Session
 from app.models.diario import Diario
 from app.schemas.diario import DiarioCreate, DiarioUpdate
-
+from datetime import datetime 
 
 class CRUDDiario:
-    def criar(self, db: Session, data: DiarioCreate) -> Diario:
-        diario = Diario(
+    def criar(self, db: Session, data: DiarioCreate):
+        novo_diario = Diario(
             id_usuario=data.id_usuario,
             texto=data.texto,
+            emocao=data.emocao,
+            data_registro=datetime.now()
         )
-        db.add(diario)
+        db.add(novo_diario)
         db.commit()
-        db.refresh(diario)
-        return diario
+        db.refresh(novo_diario)
+        return novo_diario
 
     def obter_por_id(self, db: Session, id_diario: int):
         return db.query(Diario).filter(Diario.id_diario == id_diario).first()

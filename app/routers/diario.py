@@ -6,9 +6,9 @@ from app.crud.diario import diario_crud
 
 router = APIRouter(prefix="/diarios", tags=["diarios"])
 
-@router.post("/", response_model=DiarioResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/", response_model=DiarioResponse)
 def criar_diario(diario: DiarioCreate, db: Session = Depends(get_db)):
-    return diario_crud.criar(db=db, data=diario)
+    return diario_crud.criar(db, diario)
 
 @router.get("/{diario_id}", response_model=DiarioResponse)
 def obter_diario(diario_id: int, db: Session = Depends(get_db)):

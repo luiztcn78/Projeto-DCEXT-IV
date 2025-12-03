@@ -59,7 +59,8 @@ def revogar_permissao(id_permissao: int, motivo: PermissaoRevogar = None, db: Se
     """
     Revoga uma permissão (marca como revogada)
     """
-    return compartilhamento_crud.revogar_permissao(db, id_permissao, motivo.motivo if motivo else None)
+    motivo_texto = motivo.motivo if motivo else None
+    return compartilhamento_crud.revogar_permissao(db, id_permissao, motivo_texto)
 
 @router.get("/idoso/{id_idoso}/familiares-disponiveis")
 def listar_familiares_disponiveis(id_idoso: int, db: Session = Depends(get_db)):
@@ -95,9 +96,13 @@ def obter_dados_compartilhados_familiar(
     
     resultado = []
     for permissao in permissoes:
+        # Buscar nome do idoso
+        from app.models.usuario import Usuario
+        idoso = db.query(Usuario).filter(Usuario.id_usuario == permissao.id_idoso).first()
+        
         idoso_info = {
             "id_idoso": permissao.id_idoso,
-            "nome_idoso": permissao.idoso.nome,
+            "nome_idoso": idoso.nome if idoso else "Desconhecido",
             "tipo_dado": permissao.tipo_dado.value,
             "data_concessao": permissao.data_concessao,
             "pode_ler": permissao.pode_ler,

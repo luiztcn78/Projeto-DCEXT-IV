@@ -83,7 +83,7 @@ def listar_todos_diarios_compartilhados(
             diario_info = {
                 "id_diario": diario.id_diario,
                 "id_idoso": diario.id_usuario,
-                "nome_idoso": permissao.idoso.nome,
+                "nome_idoso": permissao.nome_idoso if hasattr(permissao, 'nome_idoso') else "Desconhecido",
                 "texto": diario.texto,
                 "emocao": diario.emocao,
                 "data_registro": diario.data_registro

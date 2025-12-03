@@ -9,6 +9,7 @@ class TipoDado(str, enum.Enum):
     EMOCAO = "emocao"
     ATIVIDADE = "atividade"
     LEMBRETE = "lembrete"
+    GRATIDAO = "gratidao"
 
 class PermissaoCompartilhamento(Base):
     __tablename__ = "permissoes_compartilhamento"
@@ -22,6 +23,6 @@ class PermissaoCompartilhamento(Base):
     data_concessao = Column(DateTime(timezone=True), server_default=func.now())
     data_revogacao = Column(DateTime(timezone=True), nullable=True)
     
-    # Relações
-    idoso = relationship("Usuario", foreign_keys=[id_idoso], backref="permissoes_concedidas")
-    familiar = relationship("Usuario", foreign_keys=[id_familiar], backref="permissoes_recebidas")
+    # Relações simplificadas - sem back_populates para evitar conflitos
+    idoso = relationship("Usuario", foreign_keys=[id_idoso])
+    familiar = relationship("Usuario", foreign_keys=[id_familiar])

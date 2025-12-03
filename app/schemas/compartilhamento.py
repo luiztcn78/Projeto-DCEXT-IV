@@ -8,6 +8,7 @@ class TipoDado(str, Enum):
     EMOCAO = "emocao"
     ATIVIDADE = "atividade"
     LEMBRETE = "lembrete"
+    GRATIDAO = "gratidao"
 
 class PermissaoBase(BaseModel):
     id_idoso: int
@@ -40,6 +41,7 @@ class FamiliarDisponivel(BaseModel):
     nome: str
     email: str
     tipo: str
+    permissoes_concedidas: list[str] = []
     
     class Config:
         orm_mode = True

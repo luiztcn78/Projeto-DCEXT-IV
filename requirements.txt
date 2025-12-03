@@ -8,3 +8,6 @@ passlib[bcrypt]
 typing_extensions
 python-multipart
 email-validator
+psycopg2
+python-dotenv
+supabase

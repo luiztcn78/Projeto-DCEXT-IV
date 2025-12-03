@@ -9,28 +9,47 @@ from fastapi import HTTPException, status
 class CRUDCompartilhamento:
     
     def criar_permissao(self, db: Session, data: PermissaoCreate) -> PermissaoCompartilhamento:
-        # Verificar se idoso existe e é do tipo idoso
+        # Verificar se idoso existe
         idoso = db.query(Usuario).filter(
-            Usuario.id_usuario == data.id_idoso,
-            Usuario.tipo == "idoso"
+            Usuario.id_usuario == data.id_idoso
         ).first()
         
         if not idoso:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Idoso não encontrado"
+                detail=f"Usuário idoso com ID {data.id_idoso} não encontrado"
             )
         
-        # Verificar se familiar existe e é do tipo familiar
+        # Verificar se é realmente idoso
+        if idoso.tipo != "idoso":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"O usuário com ID {data.id_idoso} não é do tipo 'idoso'"
+            )
+        
+        # Verificar se familiar existe
         familiar = db.query(Usuario).filter(
-            Usuario.id_usuario == data.id_familiar,
-            Usuario.tipo == "familiar"
+            Usuario.id_usuario == data.id_familiar
         ).first()
         
         if not familiar:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
-                detail="Familiar não encontrado"
+                detail=f"Usuário familiar com ID {data.id_familiar} não encontrado"
+            )
+        
+        # Verificar se é realmente familiar
+        if familiar.tipo != "familiar":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"O usuário com ID {data.id_familiar} não é do tipo 'familiar'"
+            )
+        
+        # Verificar se não está tentando conceder permissão a si mesmo
+        if data.id_idoso == data.id_familiar:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Não é possível conceder permissão a si mesmo"
             )
         
         # Verificar se já existe permissão ativa
@@ -164,6 +183,12 @@ class CRUDCompartilhamento:
             PermissaoCompartilhamento.data_revogacao.is_(None),
             PermissaoCompartilhamento.pode_ver == True
         ).all()
+        
+        # Para cada permissão, buscar informações do idoso
+        for permissao in permissoes:
+            idoso = db.query(Usuario).filter(Usuario.id_usuario == permissao.id_idoso).first()
+            if hasattr(permissao, 'nome_idoso'):
+                permissao.nome_idoso = idoso.nome if idoso else "Desconhecido"
         
         return permissoes
 

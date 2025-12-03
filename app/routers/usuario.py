@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.schemas.usuario import UsuarioCreate, UsuarioResponse, UsuarioUpdate
+from app.schemas.usuario import UsuarioCreate, UsuarioResponse, UsuarioUpdate, UsuarioLogin
 from app.crud.usuario import usuario_crud
 
 router = APIRouter(prefix="/usuarios", tags=["usuarios"])
@@ -48,3 +48,14 @@ def excluir_usuario(usuario_id: int, db: Session = Depends(get_db)):
     if not sucesso:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
     return
+
+
+
+@router.post("/login", response_model=UsuarioResponse)
+def login(data: UsuarioLogin, db: Session = Depends(get_db)):
+    usuario = usuario_crud.obter_por_email(db, email=data.email)
+    if not usuario:
+        raise HTTPException(status_code=401, detail="Email ou senha incorretos")
+    if usuario.senha != data.senha:
+        raise HTTPException(status_code=401, detail="Email ou senha incorretos")
+    return usuario

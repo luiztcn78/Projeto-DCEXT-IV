@@ -1,3 +1,5 @@
+from fastapi.middleware.cors import CORSMiddleware
+
 from fastapi import FastAPI, Depends
 from sqlalchemy import text
 from app.database import get_db, engine, Base
@@ -17,6 +19,20 @@ app.include_router(diario_router.router)
 app.include_router(lembrete_router.router)
 app.include_router(atividade_router.router)
 app.include_router(emocao_router.router)
+
+origins = [
+    "http://127.0.0.1:5500",
+    "http://localhost:5500",
+    "*",  # use * apenas para desenvolvimento
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.on_event("startup")
 async def startup_event():

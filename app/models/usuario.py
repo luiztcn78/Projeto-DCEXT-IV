@@ -18,3 +18,5 @@ class Usuario(Base):
     lembretes = relationship("Lembrete", back_populates="usuario", cascade="all, delete-orphan")
     diarios = relationship("Diario", back_populates="usuario", cascade="all, delete-orphan")
     emocoes = relationship("Emocao", back_populates="usuario", cascade="all, delete-orphan")
+    
+    # Não é necessário adicionar backrefs aqui pois já foram definidos no modelo PermissaoCompartilhamento

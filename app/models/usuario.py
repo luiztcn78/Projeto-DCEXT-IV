@@ -18,3 +18,4 @@ class Usuario(Base):
     lembretes = relationship("Lembrete", back_populates="usuario", cascade="all, delete-orphan")
     diarios = relationship("Diario", back_populates="usuario", cascade="all, delete-orphan")
     emocoes = relationship("Emocao", back_populates="usuario", cascade="all, delete-orphan")
+    gratidoes = relationship("Gratidao", back_populates="usuario", cascade="all, delete-orphan")
